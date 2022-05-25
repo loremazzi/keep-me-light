@@ -35,12 +35,14 @@ const path = require("path");
 const db_name = path.join(__dirname, "./db", "sample.db");
 const db_keep = path.join(__dirname, "./db", "keep-data-light.db");
 
-const db = new sqlite3.Database(db_name, err => {
+const db = new sqlite3.Database(db_keep, err => {
   if (err) {
     return console.error(err.message);
   }
-  console.log("Successful connection to the database 'sample.db'");
+  console.log("Successful connection to the database 'keep-data-light.db'");
 });
+
+
 
 /* 
 const sql_create = `CREATE TABLE IF NOT EXISTS Books (
