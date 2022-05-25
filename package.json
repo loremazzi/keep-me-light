@@ -1,0 +1,27 @@
+{
+  "name": "keep-me-light",
+  "version": "1.0.0",
+  "description": "Keep me light application with VUI, sqlite3 server, and mobile interface developed in Vue",
+  "main": "server.js",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "http": "^0.0.1-security",
+    "sqlite3": "^5.0.8"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/loremazzi/keep-me-light.git"
+  },
+  "author": "Lorenzo Mazzero",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/loremazzi/keep-me-light/issues"
+  },
+  "homepage": "https://github.com/loremazzi/keep-me-light#readme"
+}
