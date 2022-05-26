@@ -4,16 +4,18 @@
   "description": "Keep me light application with VUI, sqlite3 server, and mobile interface developed in Vue",
   "main": "server.js",
   "dependencies": {
+    "actions-on-google": "^3.0.0",
     "axios": "^0.27.2",
+    "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "http": "^0.0.1-security",
+    "mongoose": "^6.3.4",
     "sqlite3": "^5.0.8"
   },
   "scripts": {
     "start": "node server.js"
   },
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/loremazzi/keep-me-light.git"
