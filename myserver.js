@@ -11,6 +11,7 @@ const express = require('express'); //import express
 require("dotenv").config();
 //TODO NON SO COSA SIA CORS 
 const cors = require('cors');
+const db = require("./db/database")
 
 const path = require('path');
 /* const https = require('https');
@@ -25,41 +26,7 @@ const dialogRoutes = require("./routes/dialogRoute");
 //----------IMPORT OF CONFIGS ANF MODELS---------------------------------------
 const PORT = process.env.PORT || 3003;
 app.use(express.json());
-var sqlite3 = require("sqlite3").verbose();
-const path = require("path");
-const db_keep = path.join(__dirname, "./db", "keep-data-light.db");
 
-
-/* const db = new sqlite3.Database(db_keep, err => {
-  if (err) {
-    return console.error(err.message);
-  }
-  console.log("Successful connection to the database 'keep-data-light.db'");
-});
- */
-
-//---------CORS OPTIONS--------------------------------------------------------
-const corsOptions = {
-    origin: '*',
-};
-//---------DB CONNECTION AND CONFIGURATION-------------------------------------
-const db = new sqlite3.Database(db_keep).then(() => {
-    console.log("Successful connection to the database 'keep-data-light.db'");
-    newday();
-}).catch((err) => {
-    console.error('Connection error', err);
-    process.exit();
-})
-
-//Initialization of a new day, should been invoke automatically every day
-function newday() {
-    db.run(sq.newDay, err => {
-        if (err) {
-            return console.error(err.message);
-        }
-        console.warn("What a wonderful day bro!")
-    })
-}
 //----------SERVER--------------------------------------------------------------
 const app = express();
 app.listen(PORT, () => console.log('Listening on port ' + PORT)); //listen accetta due param, il primo specifica la potra su cui ascolta il secondo può essere una funzione
