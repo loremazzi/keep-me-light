@@ -7,6 +7,8 @@ const User = mongoose.model(
         name: String,
         bithday: Date,
         sport: Number,
+        kg:Number,
+        heightcm:Number,
     })
 );
 module.exports = User;
