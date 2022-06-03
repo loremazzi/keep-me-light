@@ -1,10 +1,4 @@
 const { dialogflow } = require('actions-on-google');
-const classModel = require('../models/classModel');
-const foodModel = require('../models/foodModel');
-const intakeFoodModel = require('../models/intakeFoodModel');
-const IntakeModel = require('../models/IntakeModel');
-const userModel = require('../models/userModel');
-const whatModel = require('../models/whatModel');
 const db = require("../db/database")
 const dialogIntent = dialogflow({ debug: false });
 const sq = require("../db/queries");
@@ -14,6 +8,80 @@ const { Agent } = require('http');
     console.log(conv);
     conv.ask(`funziona`);
 }); */
+
+//nuovo metodo => https://cheatcode.co/tutorials/how-to-use-sqlite-with-node-js
+const query = (command, method = 'all') => {
+  return new Promise((resolve, reject) => {
+    db[method](command, (error, result) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(result);
+      }
+    });
+  });
+};
+
+
+
+function sqlToday(){
+  db.run(sq.today, [], (err, rows) => {
+    if (err) {
+      // return console.error(err.message);
+      reject(err)
+    }
+
+    console.log("prime rows");
+    console.log(rows);
+    var day_id = rows[0].day_id;
+    console.log(day_id);
+    return day_id;
+  })
+}
+
+
+function addIntake(quantity, fk_food, fk_day) {
+
+  var query = `INSERT INTO daily_intake_food (quantity, fk_food, fk_day)
+  VALUES (${quantity},${fk_food},${fk_day},);`
+
+  db.all(query, [], (err, rows) => {
+    if (err) {
+      // return console.error(err.message);
+      reject(err)
+    }
+    console.log("done");
+var done="done"
+  return done;
+  })
+
+
+ 
+
+
+  return query
+};
+
+function foodData(foodName){
+
+  var query = `SELECT food_id, name, calories_hundred, calories_piece, um, fk_class 
+  FROM food where name==${foodName};`
+      
+  db.all(query, [], (err, rows) => {
+    if (err) {
+      // return console.error(err.message);
+      reject(err)
+    }
+    var food = rows[0];
+    console.log(food);
+    return food
+  //  resolve(savedRiga);
+  })
+
+
+
+
+}
 
 function saveFood(tempFood) {
   riga = tempFood;
@@ -132,7 +200,6 @@ dialogIntent.intent('cibiSalvati', async (conv) => {
  */
 
 dialogIntent.intent('cibiSalvati', conv => {
-
   return new Promise(function (resolve, reject) {
     db.all(sq.foodList, [], (err, rows) => {
       if (err) {
@@ -181,33 +248,45 @@ dialogIntent.intent('ciboMangiato', conv => {
 })
 
 dialogIntent.intent('hoMangiato',  (conv, param, context) => {
-    try {
-      var result ;
-      db.all(sq.today, [], (err, rows) => {
-      
-        
-        result = rows[0];
-        console.log("QUI RESULT DENTRO DB");
-        console.log(result);
-        var UserBRM = calcBRM('M', parseFloat(User.weightkg), parseInt(User.heightcm), parseInt(User.age))
-        var UserAMR = UserBRM * 1.2;
-        console.log("UserBRM");
-        console.log(UserBRM);
-    
+console.log("conv");
+console.log(conv);
+console.log("param");
+console.log(param);
+console.log("context");
+  return new Promise(function (resolve, reject) {
+    var day_id;
+    var food={};
+    var quantity;
+    var food_name=param.food;
+    var quantity=param.number;
+    var what=param.list_of_what;
+    //GET DI DAY ID
+    db.serialize(function() {
+      day_id = sqlToday();
+      food=foodData(food_name);
+      console.log("right place day_id");
+      console.log(day_id);
+      console.log("right place food");
+      console.log(food);
+      food_id=food.food_id;
+      addIntake(quantity,food_id,day_id)
     })
-  
-    conv.ask(`Oggi hai mangiato  ${result.Kcal_total} Kcal, puoi mangiarne ancora ${(UserAMR - result.Kcal_total).toFixed(0)} Kcal`);
+    //GET DI FOOD OBJ PER ID E KAL
 
-    // var UserBRM = calcBRM('M',parseFloat(User.weightkg),parseInt(User.heightcm),parseInt(User.age))
-    // var UserAMR = UserBRM * 1.2;
-    // console.log("UserBRM");
-    // console.log(UserBRM);
-    // console.log("QUI FINALLY RESULT");
-    //conv.ask(`Oggi hai mangiato  ${result.Kcal_total} Kcal, puoi mangiarne ancora ${(UserAMR-result.Kcal_total).toFixed(0)} Kcal`);
-    //  conv.ask(`Oggi hai mangiato `);
-  } catch (err) {
-       console.error(err.message);
-  }
+
+    //ADD INTAKE FOOD IN DATABASE 
+ 
+
+
+  })
+    .then(function () {
+      
+    
+      conv.ask(`Credo di aver aggiunto`);
+    }, function (err) {
+      console.error(err.message);
+    });
+
 })
 
 

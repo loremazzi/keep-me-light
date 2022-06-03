@@ -22,7 +22,7 @@ const userRoutes = require('./routes/userRoute');
 const authRoutes = require('./routes/authRoute');
 const machineRoutes = require('./routes/machineRoute'); */
 const dialogRoutes = require("./routes/dialogRoute");
-//----------IMPORT OF CONFIGS ANF MODELS---------------------------------------
+//----------IMPORT OF CONFIGS---------------------------------------
 const PORT = process.env.PORT || 3003;
 
 var sqlite3 = require("sqlite3").verbose();
