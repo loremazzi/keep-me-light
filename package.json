@@ -4,6 +4,7 @@
   "description": "Keep me light application with VUI, sqlite3 server, and mobile interface developed in Vue",
   "main": "server.js",
   "dependencies": {
+    "@mysql/xdevapi": "8.0.29",
     "actions-on-google": "^3.0.0",
     "axios": "^0.27.2",
     "cors": "^2.8.5",
@@ -11,6 +12,7 @@
     "express": "^4.18.1",
     "http": "^0.0.1-security",
     "mongoose": "^6.3.4",
+    "mysql2": "^2.3.3",
     "sqlite3": "^5.0.8"
   },
   "scripts": {
