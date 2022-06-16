@@ -9,6 +9,35 @@ const { Agent } = require('http');
     conv.ask(`funziona`);
 }); */
 
+
+require('dotenv').config();
+var mysql = require('mysql2');
+var connection = mysql.createConnection({
+    host: "localhost",
+    user:  process.env.USER,
+    password: process.env.MySQL,
+    database: process.env.DATABASE
+});
+
+// CONNECTION EXAMPLE WITH CONSOLE LOG CONNECTED
+connection.connect(function (err) {
+    if (err) {
+        console.error('error connecting: ' + err.stack);
+        return;
+    }
+
+    console.log('connected as id ' + connection.threadId);
+});
+
+connection.query(
+    'SELECT * FROM `test-table`',
+    function(err, results, fields) {
+      console.log(results); // results contains rows returned by server
+      console.log(fields); // fields contains extra meta data about results, if available
+    }
+  );
+
+
 //nuovo metodo => https://cheatcode.co/tutorials/how-to-use-sqlite-with-node-js
 const query = (command, method = 'all') => {
   return new Promise((resolve, reject) => {
