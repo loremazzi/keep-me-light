@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const {dialogIntent} = require("../dialogflow/index");
+const {dialogIntent} = require("../dialogflow/indexedit");
 
 router.post('/*',dialogIntent);
 
