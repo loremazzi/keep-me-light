@@ -8,6 +8,7 @@ const { mquery } = require("mongoose");
 require("dotenv").config();
 
 
+
 // CONNECTION EXAMPLE WITH CONSOLE LOG CONNECTED
 connection.connect(function (err) {
   if (err) {
@@ -18,8 +19,39 @@ connection.connect(function (err) {
   console.log("connected as id " + connection.threadId);
 });
 
+connection.on('error', function(err) {
+  console.log(err.code); // 'ER_BAD_DB_ERROR'
+});
 
-async function example(mquery) {
+
+let dayid;
+
+
+connection.query( 'INSERT INTO `daily-intake` (date) VALUES (CURDATE());', function (error, results, fields) {
+  if (error){
+    console.log("error.sqlMessage");
+    console.log(error.sqlMessage);
+  }else{
+  console.log(results.insertId);
+  dayid = results.insertId;
+  }
+});
+
+
+
+connection.query( 'SELECT * FROM `daily-intake` WHERE date = CURDATE();', function (error, results, fields) {
+  if (error){
+    console.log("error.sqlMessage");
+    console.log(error.sqlMessage);
+  }else{
+  console.log("select day results");
+  console.log(results[0].day_id);
+  dayid = results[0].day_id;
+  }
+});
+
+
+async function querySelect(mquery) {
   const mysql = require('mysql2/promise');
   const conn = await mysql.createConnection({
     host: "localhost",
@@ -27,17 +59,12 @@ async function example(mquery) {
     password: process.env.MySQL,
     database: process.env.DATABASE,
   });
-  
   const [rows, fields] = await conn.query(mquery);
   return rows;
   await conn.end();
-
 }
 
-
-
-
-//nuovo metodo => https://cheatcode.co/tutorials/how-to-use-sqlite-with-node-js
+// ? nuovo metodo => https://cheatcode.co/tutorials/how-to-use-sqlite-with-node-js
 /*
 ! const query = (command, method = "all") => {
 !  return new Promise((resolve, reject) => {
@@ -52,21 +79,29 @@ async function example(mquery) {
 !};
  */
 
-
-
 dialogIntent.intent('Test', async (conv) => {
-var mquery="SELECT * FROM `test-table`"
-  const weather =await example(mquery).then((rows)=>{
-   return rows;
-  
+  var mquery = "SELECT * FROM `test-table`"
+
+  console.log("dayid" +dayid);
+  const risultato = await querySelect(mquery).then((rows) => {
+    return rows;
+
   });
 
-  console.log("weather");
-  console.log(weather);
-  conv.ask('How are you?');
-  conv.ask(`Today's weather is ${weather[0].name}.`);
+
+  conv.ask(`ciao ${risultato[1].name}.`);
 });
 
+dialogIntent.intent('hoMangiato', (conv, param, context) => {
+  console.log("conv");
+  console.log(conv);
+  console.log("param");
+  console.log(param);
+  console.log("context");
+  conv.ask(`Intento ho mangiato`);
+})
+
+//!DEFAULT INTENT WHEN NO INTENT MATCH OR WHEN AN ERROR OCCOUR
 dialogIntent.fallback((conv) => {
   conv.ask(`I couldn't understand. Can you say that again?`);
 });
@@ -75,12 +110,6 @@ dialogIntent.catch((conv, error) => {
   console.error(error);
   conv.ask('I encountered a glitch. Can you say that again?');
 });
-
-
-
-
-
-
 
 
 /* 
@@ -99,9 +128,6 @@ dialogIntent.catch((conv, error) => {
   ? })
 ? }
  */
-
-
-
 
 module.exports = {
   dialogIntent,
