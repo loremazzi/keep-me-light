@@ -1,4 +1,4 @@
-//--------MODULES IMPORT-------------------------------------------------------
+//*--------MODULES IMPORT-------------------------------------------------------
 const express = require('express'); //import express
 require("dotenv").config();
 const https = require('https');
@@ -9,12 +9,13 @@ const sq = require("./db/queries")
 
 const connection = require("./db/mysql2connect")
 
-//----------IMPORT OF ROUTES---------------------------------------------------
+//*----------IMPORT OF ROUTES---------------------------------------------------
 /* const taskRoutes = require('./routes/taskRoute');
 const userRoutes = require('./routes/userRoute');
 const authRoutes = require('./routes/authRoute');
 const machineRoutes = require('./routes/machineRoute'); */
 const dialogRoutes = require("./routes/dialogRoute");
+const appRoutes = require("./routes/appRoute");
 //----------IMPORT OF CONFIGS---------------------------------------
 const PORT = process.env.PORT || 3003;
 
@@ -32,3 +33,4 @@ app.listen(PORT, () => console.log('Listening on port ' + PORT)); //listen accet
 app.use(cors(corsOptions)); //Passing cors options to cors and app
 app.use(express.json({ limit: '1mb' })); //Controls the maximum request body size. If this is a number, then the value specifies the number of bytes; if it is a string, the value is passed to the bytes library for parsing.
 app.use('/api/dialog', dialogRoutes);
+// app.use('/api/app',appRoutes);

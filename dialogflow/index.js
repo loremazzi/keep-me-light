@@ -31,8 +31,6 @@ connection.query(
       console.log(fields); // fields contains extra meta data about results, if available
     }
   );
-
-
 //nuovo metodo => https://cheatcode.co/tutorials/how-to-use-sqlite-with-node-js
 const query = (command, method = 'all') => {
   return new Promise((resolve, reject) => {
@@ -45,8 +43,6 @@ const query = (command, method = 'all') => {
     });
   });
 };
-
-
 
 function sqlToday(){
   db.run(sq.today, [], (err, rows) => {
@@ -62,7 +58,6 @@ function sqlToday(){
     return day_id;
   })
 }
-
 
 function addIntake(quantity, fk_food, fk_day) {
 
@@ -132,15 +127,12 @@ function calculateAge(birthday) { // birthday is a date
   var today = new Date();
   var ageDate = new Date(birthday); // miliseconds from epoch
   return dateDiff(ageDate, today)
-
-
 }
 var User = {};
 db.all(sq.defineUser, [], (err, rows) => {
   if (err) {
     return console.error(err.message);
   }
-
   appUser = rows[0];
   console.error(`the user is ${appUser.name}`)
   User.user_id = appUser.user_id;
