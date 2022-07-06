@@ -5,7 +5,6 @@
 /// app.use(express.static(path.join("/var/www/html/PlastTec_client", 'build')));
 /// 
 
-
 //--------MODULES IMPORT-------------------------------------------------------
 const express = require('express'); //import express
 require("dotenv").config();
@@ -31,7 +30,7 @@ app.use(bodyparser.urlencoded({ extended: true })); */
 app.use('/api/task', taskRoutes);
 app.use('/api/machine', machineRoutes);
 app.use('/api/user', userRoutes); */
-// app.use('/api/app', appRoute);
+app.use('/api/app', appRoute);
 app.use('/api/dialog', dialogRoutes);
 
 app.get('/*', function (req, res) {

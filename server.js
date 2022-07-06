@@ -33,4 +33,4 @@ app.listen(PORT, () => console.log('Listening on port ' + PORT)); //listen accet
 app.use(cors(corsOptions)); //Passing cors options to cors and app
 app.use(express.json({ limit: '1mb' })); //Controls the maximum request body size. If this is a number, then the value specifies the number of bytes; if it is a string, the value is passed to the bytes library for parsing.
 app.use('/api/dialog', dialogRoutes);
-// app.use('/api/app',appRoutes);
+app.use('/api/app',appRoutes);

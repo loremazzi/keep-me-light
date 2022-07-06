@@ -227,7 +227,6 @@ dialogIntent.intent('CosaHoMangiato', async (conv) => {
   var tempToday = await querySelect('SELECT * FROM `daily-intake` WHERE date = CURDATE();')
   var tempIntFood = await querySelect('SELECT * FROM keep_me_light.`intake-food` as intake join keep_me_light.food as food on intake.fk_food = food.food_id  where'+` fk_day = ${dayid}`)
 //SELECT * FROM keep_me_light.`intake-food` as intake join keep_me_light.food as food on intake.fk_food = food.food_id  where fk_day = 154  ;
-console.log("CIAO CIAO CIAO CIAO CIAO CIAO CIAO CIAO CIAO CIAO CIAO CIAO CIAO CIAO CIAO CIAO CIAO CIAO CIAO CIAO ");
 console.log("tempIntFood",tempIntFood);
 var cibo ="";
   conv.ask(`Ecco quello che hai mangiato :`);
@@ -242,8 +241,9 @@ cibo = cibo+ `${element.quantity} ${element.name} `
     return;
   }
 if(tempIntFood.length >0)
-conv.ask(`${cibo}`)
-{   conv.ask(new BasicCard({
+{  
+  conv.ask(`${cibo}`)
+  conv.ask(new BasicCard({
     text: `${cibo}`, // Note the two spaces before '\n' required for
                                  // a line break to be rendered in the card.
     subtitle: `Un totale di ${tempToday.Kcal_total} kcal`, //*TODO è UDEFINED
@@ -303,7 +303,7 @@ dialogIntent.intent('hoMangiato', async (conv, param, context) => {
       var addKcal = foodobj.pkcal * foodobj.number;
       var newKcal = tempToday.at(0).Kcal_total + addKcal;
       var newLeftKcal = tempToday.at(0).Kcal_limit - addKcal;
-      var queryUpdateDay = "UPDATE `daily-intake` " + ` SET Kcal_total = ${newKcal},Kcal_limit =  ${newLeftKcal} WHERE (day_id = ${dayid});`
+      var queryUpdateDay = "UPDATE `daily-intake` " + ` SET Kcal_total = ${newKcal} WHERE (day_id = ${dayid});`
       await querySelect(queryFoodInsert);
       await querySelect(queryUpdateDay);
       conv.ask(`ho segnato ` + foodobj.number + " " + foodobj.name);
